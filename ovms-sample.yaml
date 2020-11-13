@@ -1,0 +1,17 @@
+apiVersion: charts.intel.com/v1alpha1
+kind: Ovms
+metadata:
+  name: ovms-sample
+spec:
+  aws_access_key_id: ""
+  aws_region: ""
+  aws_secret_access_key: ""
+  image_name: openvino/model_server:latest
+  log_level: INFO
+  model_name: ""
+  model_path: ""
+  replicas: 1
+  service_type: LoadBalancer
+  target_device: CPU
+  
+  
