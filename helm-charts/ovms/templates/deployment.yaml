@@ -42,7 +42,7 @@ spec:
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 10
-        {{ if or .Values.gcp_creds_secret_name .Values.aws_access_key_id .Values.aws_secret_access_key .Values.aws_region .Values.s3_compat_api_endpoint .Values.http_proxy .Values.https_proxy .Values.no_proxy }}
+        {{ if or .Values.gcp_creds_secret_name .Values.s3_secret_name .Values.s3_region .Values.s3_endpoint .Values.http_proxy .Values.https_proxy .Values.no_proxy }}
         env:
         {{ end }}
         {{ if .Values.http_proxy }}
@@ -61,24 +61,27 @@ spec:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /secret/gcp-creds.json
         {{ end }}
-        {{ if .Values.aws_access_key_id }}
+        {{ if .Values.s3_secret_name }}
         - name: AWS_ACCESS_KEY_ID
-          value: {{ .Values.aws_access_key_id }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.s3_secret_name }}
+              key: AWS_ACCESS_KEY_ID
         {{ end }}
-        {{ if .Values.aws_secret_access_key }}
+        {{ if .Values.s3_secret_name }}
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: ovms-aws-secret
-              key: secret_access_key
+              name: {{ .Values.s3_secret_name }}
+              key: AWS_SECRET_ACCESS_KEY
         {{ end }}
-        {{ if .Values.aws_region }}
+        {{ if .Values.s3_region }}
         - name: AWS_REGION
-          value: {{ .Values.aws_region }}
+          value: {{ .Values.s3_region }}
         {{ end }}
-        {{ if .Values.s3_compat_api_endpoint }}
+        {{ if .Values.s3_endpoint }}
         - name: S3_ENDPOINT
-          value: {{ .Values.s3_compat_api_endpoint }}
+          value: {{ .Values.s3_endpoint }}
         {{ end }}
         args: [
         {{ if .Values.config_configmap_name }}

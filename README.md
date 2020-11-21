@@ -26,3 +26,7 @@ The OpenVINO operator adds a new `Ovms` custom resource definition. When a
 deployment consisting of some number of model servering pods, where the
 model being served is pulled from an object store (ie. Ceph, Amazon S3,
 Google Cloud Storage).
+
+```
+oc create -f ovms-sample
+```
